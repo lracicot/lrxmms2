@@ -1,149 +1,111 @@
-/*  XMMS2 - X Music Multiplexer System
- *  Copyright (C) 2003-2006 XMMS2 Team
- *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2.1 of the License, or (at your option) any later version.
- *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
- *
- *  This file is a part of the XMMS2 client tutorial #6
- *  Introducing asynchronous clients
- */
+#include <gtk/gtk.h>
 
-#include <stdlib.h>
-
-/* include xmmsclient header */
-#include </usr/include/xmms2/xmmsclient/xmmsclient.h>
-
-/* also include this to get glib integration */
-#include <xmmsclient/xmmsclient-glib.h>
-
-/* include the GLib header */
-#include <glib.h>
-
-/*
- * We set this up as a callback for our current_id
- * method. Read the main program first before
- * returning here.
- */
-int
-my_current_id (xmmsv_t *value, void *userdata)
+/* Our new improved callback.  The data passed to this function
+ * is printed to stdout. */
+static void callback( GtkWidget *widget,
+                      gpointer   data )
 {
-	/*
-	 * At this point the value struct contains the
-	 * answer. And we can now extract it as normal.
-	 */
-	int id;
-
-	/*
-	 * we passed the mainloop as an argument
-	 * to set_notifier, which means it will be
-	 * passed as userdata to this function
-	 */
-	GMainLoop *ml = (GMainLoop *) userdata;
-
-	if (!xmmsv_get_int (value, &id)) {
-		fprintf (stderr, "Value didn't contain the expected type!\n");
-		exit (EXIT_FAILURE);
-	}
-
-	printf ("Current id is %d\n", id);
-
-	g_main_loop_quit (ml);
-
-	/* We will see in the next tutorial what the return value of a
-	 * callback is used for.  It only matters for signals and
-	 * broadcasts anyway, so for simple commands like here, we can
-	 * return either TRUE or FALSE.
-	 */
-	return TRUE;
-
-	/* One thing to notice here, at the end of callbacks,
-	 * is that as soon as the xmmsv_t struct goes out of
-	 * scope, it will be freed automatically.
-	 * If you want to keep it around in memory, you will
-	 * need to increment its refcount using xmmsv_ref.
-	 */
+    g_print ("Hello again - %s was pressed\n", (gchar *) data);
 }
 
-int
-main (int argc, char **argv)
+/* another callback */
+static gboolean delete_event( GtkWidget *widget,
+                              GdkEvent  *event,
+                              gpointer   data )
 {
-	/* The mainloop we should use later */
-	GMainLoop *ml;
+    gtk_main_quit ();
+    return FALSE;
+}
 
-	/*
-	 * The first part of this program is
-	 * commented on in tut1.c
-	 */
-	xmmsc_connection_t *connection;
-	xmmsc_result_t *result;
+// Close the program
+static void destroy(GtkWidget *widget,
+                    gpointer   data)
+{
+	gtk_main_quit ();
+}
 
-	/*
-	 * In an async client we still connect as
-	 * normal. Read up on this in earlier
-	 * tutorials if you need.
-	 */
-	connection = xmmsc_init ("tutorial6");
-	if (!connection) {
-		fprintf (stderr, "OOM!\n");
-		exit (EXIT_FAILURE);
-	}
+int main( int   argc,
+          char *argv[] )
+{
+    /* GtkWidget is the storage type for widgets */
+    GtkWidget *window;
+    GtkWidget *button;
+    GtkWidget *box1;
 
-	if (!xmmsc_connect (connection, getenv ("XMMS_PATH"))) {
-		fprintf (stderr, "Connection failed: %s\n",
-		         xmmsc_get_last_error (connection));
+    /* This is called in all GTK applications. Arguments are parsed
+     * from the command line and are returned to the application. */
+    gtk_init (&argc, &argv);
 
-		exit (EXIT_FAILURE);
-	}
+    /* Create a new window */
+    window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-	/*
-	 * Initialize the mainloop, for more information about GLib mainloop
-	 * see the GTK docs.
-	 */
-	ml = g_main_loop_new (NULL, FALSE);
+    /* This is a new call, which just sets the title of our
+     * new window to "Hello Buttons!" */
+    gtk_window_set_title (GTK_WINDOW (window), "Hello Buttons!");
 
-	/*
-	 * The big difference between a sync client and an async client is that the
-	 * async client works with callbacks. When you send a command and get an
-	 * xmmsc_result_t back you should set up a callback for it and directly
-	 * unref it. This means we can't do syncronous operations on this connection.
-	 *
-	 * In simple cases you can use the XMMS_CALLBACK_SET macro, but in order to
-	 * be verbose here I do it all manually. Let's ask for the current id
-	 * in an async way instead of the sync way as we did in tut2.
-	 */
+    /* Here we just set a handler for delete_event that immediately
+     * exits GTK. */
+    g_signal_connect (window, "delete-event",
+		      G_CALLBACK (delete_event), NULL);
 
-	result = xmmsc_playback_current_id (connection);
-	xmmsc_result_notifier_set (result, my_current_id, ml);
-	xmmsc_result_unref (result);
+	g_signal_connect (window, "destroy",
+                      G_CALLBACK (destroy), NULL);
 
-	/*
-	 * As you see we do it pretty much the same way that we did in tut2, but
-	 * instead of being able to access the current id directly (as we would
-	 * have if we where blocking) we need to wait until xmms calls our
-	 * my_current_id function. This will keep your GUI from hanging while
-	 * waiting for xmms2 to answer your command.
-	 *
-	 * In order to make xmmsclient call your callback functions we need to put
-	 * the fd of the connection into the mainloop of our program. For your
-	 * convenience the xmmsclient lib ships with automatic integration with
-	 * GMainLoop. We just need to link with xmmsclient-glib and do the following
-	 * call to make it work.
-	 */
-	xmmsc_mainloop_gmain_init (connection);
+    /* Sets the border width of the window. */
+    gtk_container_set_border_width (GTK_CONTAINER (window), 10);
 
-	/*
-	 * We are now all set to go. Just run the main loop and watch the magic.
-	 */
+    /* We create a box to pack widgets into.  This is described in detail
+     * in the "packing" section. The box is not really visible, it
+     * is just used as a tool to arrange widgets. */
+    box1 = gtk_hbox_new (FALSE, 0);
 
-	g_main_loop_run (ml);
+    /* Put the box into the main window. */
+    gtk_container_add (GTK_CONTAINER (window), box1);
 
-	return EXIT_SUCCESS;
+    /* Creates a new button with the label "Button 1". */
+    button = gtk_button_new_with_label ("Play/Pause");
+    
+    /* Now when the button is clicked, we call the "callback" function
+     * with a pointer to "button 1" as its argument */
+    g_signal_connect (button, "clicked",
+		      G_CALLBACK (callback), (gpointer) "button 1");
 
+    /* Instead of gtk_container_add, we pack this button into the invisible
+     * box, which has been packed into the window. */
+    gtk_box_pack_start (GTK_BOX(box1), button, TRUE, TRUE, 0);
+
+    /* Always remember this step, this tells GTK that our preparation for
+     * this button is complete, and it can now be displayed. */
+    gtk_widget_show (button);
+
+    /* Do these same steps again to create a second button */
+    button = gtk_button_new_with_label ("Button 2");
+
+    /* Call the same callback function with a different argument,
+     * passing a pointer to "button 2" instead. */
+    g_signal_connect (button, "clicked",
+		      G_CALLBACK (callback), (gpointer) "button 2");
+
+    gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
+
+    /* The order in which we show the buttons is not really important, but I
+     * recommend showing the window last, so it all pops up at once. */
+    gtk_widget_show (button);
+	
+    // Create a third button
+    button = gtk_button_new_with_label ("Exit");
+	g_signal_connect_swapped (button, "clicked",
+		      G_CALLBACK (gtk_widget_destroy), window);
+    gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
+	gtk_widget_show (button);
+	
+
+    gtk_widget_show (box1);
+
+    gtk_widget_show (window);
+    
+    /* Rest in gtk_main and wait for the fun to begin! */
+    gtk_main ();
+
+    return 0;
 }
