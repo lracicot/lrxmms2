@@ -5,10 +5,10 @@ Geometry=1366x744+0+24
 
 [Project Manager]
 Shortcut=lrxmms2//lrxmms2//src//lrxmms2
-Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//GTK2
+Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2%%%lrxmms2//XMMS2//xmms2-client-glib
 
 [File Loader]
-Files=file:///home/master/workspace/lrxmms2/src/main.c#117%%%file:///home/master/workspace/lrxmms2/src/status.c#123
+Files=file:///home/master/workspace/lrxmms2/src/main.c#35%%%file:///home/master/workspace/lrxmms2/src/status.c#99%%%file:///usr/include/xmms2/xmmsclient/xmmsclient.h#120
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
@@ -27,4 +27,5 @@ BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' '
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
+Watch=\sresult
 Stop at beginning=2

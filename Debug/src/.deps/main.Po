@@ -532,7 +532,9 @@ main.o: /home/master/workspace/lrxmms2/src/main.c \
  /usr/include/xmms2/xmmsc/xmmsv.h \
  /usr/include/xmms2/xmmsclient/xmmsclient-glib.h /usr/include/stdlib.h \
  /usr/include/x86_64-linux-gnu/bits/waitflags.h \
- /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h
+ /usr/include/x86_64-linux-gnu/bits/waitstatus.h /usr/include/alloca.h \
+ /home/master/workspace/lrxmms2/src/xmms2.h \
+ /home/master/workspace/lrxmms2/src/mainWindow.h
 
 /usr/include/gtk-2.0/gtk/gtk.h:
 
@@ -1753,3 +1755,7 @@ main.o: /home/master/workspace/lrxmms2/src/main.c \
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
 
 /usr/include/alloca.h:
+
+/home/master/workspace/lrxmms2/src/xmms2.h:
+
+/home/master/workspace/lrxmms2/src/mainWindow.h:

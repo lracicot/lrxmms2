@@ -1,6 +1,5 @@
 /*
- * main.c
- * lrxmms2
+ * mainWindow.h
  *
  * Copyright (C) 2012 - Louis Racicot <info@louisracicot.com>
  *
@@ -18,30 +17,4 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <gtk/gtk.h>
-#include <xmmsclient/xmmsclient.h>
-#include <xmmsclient/xmmsclient-glib.h>
-#include <stdlib.h>
-#include "xmms2.h"
-#include "mainWindow.h"
-
-int main( int   argc,
-          char* argv[] )
-{
-	GMainLoop* ml;
-	GtkWidget* window;
-	xmmsc_connection_t *connection;
-	
-	connection = get_xmms2_connection();
-	
-    gtk_init (&argc, &argv);
-    window = new_mainWindow((gpointer) connection);
-	
-    gtk_widget_show (window);
-
-
-	ml = g_main_loop_new (NULL, FALSE);
-	g_main_loop_run (ml);
-
-    return 0;
-}
+GtkWidget *new_mainWindow ();

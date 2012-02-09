@@ -18,7 +18,11 @@ AM_CFLAGS =\
 bin_PROGRAMS = lrxmms2
 
 lrxmms2_SOURCES = \
-	main.c
+	main.c \
+	xmms2.c \
+	xmms2.h \
+	mainWindow.c \
+	mainWindow.h
 
 lrxmms2_LDFLAGS = 
 
