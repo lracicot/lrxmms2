@@ -1,4 +1,7 @@
 #include <gtk/gtk.h>
+#include <xmmsclient/xmmsclient.h>
+#include <xmmsclient/xmmsclient-glib.h>
+#include <stdlib.h>
 
 /* Our new improved callback.  The data passed to this function
  * is printed to stdout. */
@@ -6,6 +9,31 @@ static void callback( GtkWidget *widget,
                       gpointer   data )
 {
     g_print ("Hello again - %s was pressed\n", (gchar *) data);
+}
+
+
+static void playback_play( GtkWidget *widget,
+                        gpointer   connection )
+{
+	xmmsc_result_t *result;
+	result = xmmsc_playback_start ((xmmsc_connection_t *) connection);
+	xmmsc_result_wait (result);
+}
+
+static void playback_pause( GtkWidget *widget,
+                        gpointer   connection )
+{
+	xmmsc_result_t *result;
+	result = xmmsc_playback_pause ((xmmsc_connection_t *) connection);
+	xmmsc_result_wait (result);
+}
+
+static void playback_stop( GtkWidget *widget,
+                        gpointer   connection )
+{
+	xmmsc_result_t *result;
+	result = xmmsc_playback_stop ((xmmsc_connection_t *) connection);
+	xmmsc_result_wait (result);
 }
 
 /* another callback */
@@ -27,6 +55,30 @@ static void destroy(GtkWidget *widget,
 int main( int   argc,
           char *argv[] )
 {
+	/* The mainloop we should use later */
+	GMainLoop *ml;
+
+	
+	xmmsc_connection_t *connection;
+
+	/*
+	 * In an async client we still connect as
+	 * normal. Read up on this in earlier
+	 * tutorials if you need.
+	 */
+	connection = xmmsc_init ("tutorial6");
+	if (!connection) {
+		fprintf (stderr, "OOM!\n");
+		exit (EXIT_FAILURE);
+	}
+
+	if (!xmmsc_connect (connection, getenv ("XMMS_PATH"))) {
+		fprintf (stderr, "Connection failed: %s\n",
+		         xmmsc_get_last_error (connection));
+
+		exit (EXIT_FAILURE);
+	}
+	
     /* GtkWidget is the storage type for widgets */
     GtkWidget *window;
     GtkWidget *button;
@@ -41,7 +93,7 @@ int main( int   argc,
 
     /* This is a new call, which just sets the title of our
      * new window to "Hello Buttons!" */
-    gtk_window_set_title (GTK_WINDOW (window), "Hello Buttons!");
+    gtk_window_set_title (GTK_WINDOW (window), "lrxmms2");
 
     /* Here we just set a handler for delete_event that immediately
      * exits GTK. */
@@ -62,40 +114,27 @@ int main( int   argc,
     /* Put the box into the main window. */
     gtk_container_add (GTK_CONTAINER (window), box1);
 
-    /* Creates a new button with the label "Button 1". */
-    button = gtk_button_new_with_label ("Play/Pause");
-    
-    /* Now when the button is clicked, we call the "callback" function
-     * with a pointer to "button 1" as its argument */
-    g_signal_connect (button, "clicked",
-		      G_CALLBACK (callback), (gpointer) "button 1");
-
-    /* Instead of gtk_container_add, we pack this button into the invisible
-     * box, which has been packed into the window. */
+    // Create PLAY button
+    button = gtk_button_new_with_label ("Play");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_play), (gpointer) connection);
     gtk_box_pack_start (GTK_BOX(box1), button, TRUE, TRUE, 0);
-
-    /* Always remember this step, this tells GTK that our preparation for
-     * this button is complete, and it can now be displayed. */
-    gtk_widget_show (button);
-
-    /* Do these same steps again to create a second button */
-    button = gtk_button_new_with_label ("Stop");
-
-    /* Call the same callback function with a different argument,
-     * passing a pointer to "button 2" instead. */
-    g_signal_connect (button, "clicked",
-		      G_CALLBACK (callback), (gpointer) "button 2");
-
-    gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
-
-    /* The order in which we show the buttons is not really important, but I
-     * recommend showing the window last, so it all pops up at once. */
     gtk_widget_show (button);
 	
-    // Create a third button
+    // Create PAUSE button
+    button = gtk_button_new_with_label ("Pause");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_pause), (gpointer) connection);
+    gtk_box_pack_start (GTK_BOX(box1), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);
+
+    // Create STOP button
+    button = gtk_button_new_with_label ("Stop");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_stop), (gpointer) connection);
+    gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);
+	
+    // Create EXIT button
     button = gtk_button_new_with_label ("Exit");
-	g_signal_connect_swapped (button, "clicked",
-		      G_CALLBACK (gtk_widget_destroy), window);
+	g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), window);
     gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
 	gtk_widget_show (button);
 	
@@ -103,9 +142,16 @@ int main( int   argc,
     gtk_widget_show (box1);
 
     gtk_widget_show (window);
-    
+
+	
+	/*
+	 * We are now all set to go. Just run the main loop and watch the magic.
+	 */
+
+	ml = g_main_loop_new (NULL, FALSE);
+	g_main_loop_run (ml);
     /* Rest in gtk_main and wait for the fun to begin! */
-    gtk_main ();
+    //gtk_main ();
 
     return 0;
 }

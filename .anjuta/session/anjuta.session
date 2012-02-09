@@ -5,10 +5,10 @@ Geometry=1366x744+0+24
 
 [Project Manager]
 Shortcut=lrxmms2//lrxmms2//src//lrxmms2
-Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2
+Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//GTK2
 
 [File Loader]
-Files=file:///home/master/workspace/lrxmms2/src/main.c#220%%%file:///home/master/workspace/lrxmms2/src/status.c#1
+Files=file:///home/master/workspace/lrxmms2/src/main.c#117%%%file:///home/master/workspace/lrxmms2/src/status.c#123
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
