@@ -5,10 +5,10 @@ Geometry=1366x744+0+24
 
 [Project Manager]
 Shortcut=lrxmms2//lrxmms2//src//lrxmms2
-Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2%%%lrxmms2//XMMS2//xmms2-client-glib
+Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2
 
 [File Loader]
-Files=file:///home/master/workspace/lrxmms2/src/main.c#35%%%file:///home/master/workspace/lrxmms2/src/status.c#99%%%file:///usr/include/xmms2/xmmsclient/xmmsclient.h#120
+Files=file:///home/master/workspace/lrxmms2/src/main.c#22%%%file:///home/master/workspace/lrxmms2/src/xmms2.c#74%%%file:///home/master/workspace/lrxmms2/src/xmms2.h#30%%%file:///usr/include/xmms2/xmmsclient/xmmsclient.h#94%%%file:///home/master/workspace/lrxmms2/src/playback.c#26%%%file:///home/master/workspace/lrxmms2/src/playback.h#9%%%file:///home/master/workspace/lrxmms2/src/playlist.c#1%%%file:///home/master/workspace/lrxmms2/src/playlist.h#4%%%file:///home/master/workspace/lrxmms2/src/mainWindow.c#21%%%file:///home/master/workspace/lrxmms2/src/playlist_gtk_model.c#3%%%file:///home/master/workspace/lrxmms2/src/playlist_gtk_model.h#1
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n

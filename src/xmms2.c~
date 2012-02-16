@@ -22,8 +22,6 @@
 #include <xmmsclient/xmmsclient.h>
 #include <xmmsclient/xmmsclient-glib.h>
 
-const char *err_buf;
-
 xmmsc_connection_t *get_xmms2_connection()
 {
 	xmmsc_connection_t *connection;

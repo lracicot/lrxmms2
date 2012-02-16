@@ -48,7 +48,8 @@ CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am_lrxmms2_OBJECTS = main.$(OBJEXT) xmms2.$(OBJEXT) \
-	mainWindow.$(OBJEXT)
+	mainWindow.$(OBJEXT) playback.$(OBJEXT) playlist.$(OBJEXT) \
+	playlist_gtk_model.$(OBJEXT)
 lrxmms2_OBJECTS = $(am_lrxmms2_OBJECTS)
 am__DEPENDENCIES_1 =
 lrxmms2_DEPENDENCIES = $(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
@@ -251,7 +252,13 @@ lrxmms2_SOURCES = \
 	xmms2.c \
 	xmms2.h \
 	mainWindow.c \
-	mainWindow.h
+	mainWindow.h \
+	playback.c \
+	playback.h \
+	playlist.c \
+	playlist.h \
+	playlist_gtk_model.c \
+	playlist_gtk_model.h
 
 lrxmms2_LDFLAGS = 
 lrxmms2_LDADD = \
@@ -349,6 +356,9 @@ distclean-compile:
 
 include ./$(DEPDIR)/main.Po
 include ./$(DEPDIR)/mainWindow.Po
+include ./$(DEPDIR)/playback.Po
+include ./$(DEPDIR)/playlist.Po
+include ./$(DEPDIR)/playlist_gtk_model.Po
 include ./$(DEPDIR)/xmms2.Po
 
 .c.o:

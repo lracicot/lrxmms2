@@ -22,7 +22,14 @@ lrxmms2_SOURCES = \
 	xmms2.c \
 	xmms2.h \
 	mainWindow.c \
-	mainWindow.h
+	mainWindow.h \
+	playback.c \
+	playback.h \
+	playlist.c \
+	playlist.h \
+	playlist_gtk_model.c \
+	playlist_gtk_model.h \
+	song.h
 
 lrxmms2_LDFLAGS = 
 

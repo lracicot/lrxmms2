@@ -1,0 +1,2 @@
+
+GtkTreeStore* getGtkTreePlaylist();

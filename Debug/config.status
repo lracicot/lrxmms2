@@ -1053,12 +1053,6 @@ fi # test -n "$CONFIG_FILES"
 if test -n "$CONFIG_HEADERS"; then
 cat >"$ac_tmp/defines.awk" <<\_ACAWK ||
 BEGIN {
-D["PACKAGE_NAME"]=" \"lrxmms2\""
-D["PACKAGE_TARNAME"]=" \"lrxmms2\""
-D["PACKAGE_VERSION"]=" \"0.1\""
-D["PACKAGE_STRING"]=" \"lrxmms2 0.1\""
-D["PACKAGE_BUGREPORT"]=" \"\""
-D["PACKAGE_URL"]=" \"\""
 D["PACKAGE"]=" \"lrxmms2\""
 D["VERSION"]=" \"0.1\""
 D["GETTEXT_PACKAGE"]=" \"lrxmms2\""

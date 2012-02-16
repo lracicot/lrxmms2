@@ -60,22 +60,22 @@
 #define PACKAGE "lrxmms2"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT ""
+/* #undef PACKAGE_BUGREPORT */
 
 /* Define to the full name of this package. */
-#define PACKAGE_NAME "lrxmms2"
+/* #undef PACKAGE_NAME */
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "lrxmms2 0.1"
+/* #undef PACKAGE_STRING */
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "lrxmms2"
+/* #undef PACKAGE_TARNAME */
 
 /* Define to the home page for this package. */
-#define PACKAGE_URL ""
+/* #undef PACKAGE_URL */
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.1"
+/* #undef PACKAGE_VERSION */
 
 /* Define to 1 if you have the ANSI C header files. */
 #define STDC_HEADERS 1

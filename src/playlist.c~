@@ -1,0 +1,11 @@
+#include <xmmsclient/xmmsclient.h>
+#include <xmmsclient/xmmsclient-glib.h>
+#include <gtk/gtk.h>
+
+const char *err_buf;
+
+void playlist_add( GtkWidget *widget,
+                        gpointer   connection )
+{
+	
+}

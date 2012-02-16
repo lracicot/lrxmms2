@@ -1,0 +1,7 @@
+/*
+const char get_current_playlist( GtkWidget *widget,
+                        gpointer   connection );
+
+void playback_add( GtkWidget *widget,
+                        gpointer   connection );
+*/
