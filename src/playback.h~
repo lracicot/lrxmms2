@@ -1,3 +1,5 @@
+#ifndef __LRXMMS2_PLAYLIST_GTK_MODEL_H__
+#define __LRXMMS2_PLAYLIST_GTK_MODEL_H__
 
 void playback_play( GtkWidget *widget,
                         gpointer   connection );
@@ -8,5 +10,4 @@ void playback_pause( GtkWidget *widget,
 void playback_stop( GtkWidget *widget,
                         gpointer   connection );
 
-void playback_add( GtkWidget *widget,
-                        gpointer   connection );
+#endif

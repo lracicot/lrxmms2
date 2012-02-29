@@ -22,10 +22,8 @@
 #include <xmmsclient/xmmsclient.h>
 #include <xmmsclient/xmmsclient-glib.h>
 #include <stdlib.h>
-#include "xmms2.h"
 #include "mainWindow.h"
-
-const char *err_buf;
+#include "xmms2.h"
 
 int main( int   argc,
           char* argv[] )

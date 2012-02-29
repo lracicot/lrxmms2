@@ -1,0 +1,7 @@
+struct track
+{
+	const char *title;
+	int length;
+	const char *artist;
+	int current;
+};

@@ -19,6 +19,7 @@
 
 #include <xmmsclient/xmmsclient.h>
 #include <xmmsclient/xmmsclient-glib.h>
+#include "entities/track.h"
 
 #ifndef __LRXMMS2_XMMS_H__
 #define __LRXMMS2_XMMS_H__
@@ -28,5 +29,6 @@ xmmsc_result_t 		*xmms2_playback_play (xmmsc_connection_t * connection);
 xmmsc_result_t 		*xmms2_playback_pause (xmmsc_connection_t * connection);
 xmmsc_result_t 		*xmms2_playback_stop (xmmsc_connection_t * connection);
 xmmsc_result_t 		*xmms2_playlist_current_active (xmmsc_connection_t * connection);
+track 				*get_mediainfo (xmmsc_connection_t *connection, int id);
 
 #endif

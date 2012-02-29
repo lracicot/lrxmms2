@@ -1,3 +1,6 @@
+
+SUBDIRS = \
+	entities
 ## Process this file with automake to produce Makefile.in
 
 ## Created by Anjuta
@@ -28,8 +31,7 @@ lrxmms2_SOURCES = \
 	playlist.c \
 	playlist.h \
 	playlist_gtk_model.c \
-	playlist_gtk_model.h \
-	song.h
+	playlist_gtk_model.h
 
 lrxmms2_LDFLAGS = 
 

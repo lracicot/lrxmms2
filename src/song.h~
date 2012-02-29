@@ -1,0 +1,7 @@
+struct song
+{
+	title,
+	length,
+	artist,
+	current
+}

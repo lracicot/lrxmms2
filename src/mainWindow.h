@@ -17,4 +17,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef __LRXMMS2_MAIN_WINDOW_H__
+#define __LRXMMS2_MAIN_WINDOW_H__
+
 GtkWidget *new_mainWindow ();
+
+#endif

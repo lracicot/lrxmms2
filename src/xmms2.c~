@@ -19,8 +19,12 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <xmmsclient/xmmsclient.h>
 #include <xmmsclient/xmmsclient-glib.h>
+#include "entities/track.h"
+
+const char *err_buf;
 
 xmmsc_connection_t *get_xmms2_connection()
 {
@@ -76,8 +80,12 @@ xmmsc_result_t *xmms2_playlist_current_active (xmmsc_connection_t * connection)
 	return result;
 }
 
-void get_mediainfo (xmmsc_connection_t *connection, int id)
+track *get_mediainfo (xmmsc_connection_t *connection, int id)
 {
+	track *song;
+	int i;
+	char* strfound;
+	song = malloc(sizeof(track));
 	xmmsc_result_t *result;
 	xmmsv_t *return_value;
 	const char *err_buf;
@@ -97,10 +105,7 @@ void get_mediainfo (xmmsc_connection_t *connection, int id)
 		         err_buf);
 		exit (EXIT_FAILURE);
 	}
-
-	/* Same remark as in tut3, see tut5 for details on why
-	 * we need to do this.
-	 */
+	
 	infos = xmmsv_propdict_to_dict (return_value, NULL);
 
 	if (!xmmsv_dict_get (infos, "artist", &dict_entry) ||
@@ -108,23 +113,35 @@ void get_mediainfo (xmmsc_connection_t *connection, int id)
 		val = "No artist";
 	}
 
-	printf ("artist = %s\n", val);
+	song->artist = val;
 
 	if (!xmmsv_dict_get (infos, "title", &dict_entry) ||
 	    !xmmsv_get_string (dict_entry, &val)) {
-		val = "Title";
+			if (!xmmsv_dict_get (infos, "url", &dict_entry) ||
+				!xmmsv_get_string (dict_entry, &val)) {
+				val = "No Title";
+			}
+			else
+			{
+				// strrpos
+				/*for (i = strlen(val)-1; i>=0; i--)
+				{
+					if (strcmp(val[i], "/"))
+					{
+						strfound = i;
+						break;
+					}
+				}*/
+				strfound = strrchr(val, '/');
+
+				//substr
+				val = strfound;
+			}
 	}
-	printf ("title = %s\n", val);
+	song->title = val;
 
-	if (!xmmsv_dict_get (infos, "bitrate", &dict_entry) ||
-	    !xmmsv_get_int (dict_entry, &intval)) {
-		intval = 0;
-	}
-	printf ("bitrate = %i\n", intval);
+	//xmmsv_unref (infos);
+	//xmmsc_result_unref (result);
 
-	/* Again, unref infos else we leak. */
-	xmmsv_unref (infos);
-
-	xmmsc_result_unref (result);
-
+	return song;
 }

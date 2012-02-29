@@ -20,11 +20,12 @@
 #include "playback.h"
 #include "playlist.h"
 #include "playlist_gtk_model.h"
+#include "entities/playlist.h"
 
 enum
 {
    TITLE_COLUMN,
-   LENGTH_COLUMN,
+   ARTIST_COLUMN,
    CURRENT_COLUMN,
    N_COLUMNS
 };
@@ -49,60 +50,98 @@ GtkWidget* new_mainWindow (gpointer* connection)
     GtkWidget *window;
 	GtkWidget *button;
 	GtkWidget *tree;
-    GtkWidget *box1;
+    GtkWidget *mainBox;
+    GtkWidget *playbackControlBox;
+    GtkWidget *playlistBox;
+    GtkWidget *playlistControlBox;
+	GtkWidget *scrolled_window;
 
 	GtkTreeStore *store;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
+	playlist *trackList;
+	trackList = malloc(sizeof(playlist));
+
+	
+	
+	store = gtk_tree_store_new (N_COLUMNS,    // Total number of columns
+                             G_TYPE_STRING,   // Song name
+                             G_TYPE_STRING,   // Artist
+                             G_TYPE_BOOLEAN); // Current?
 
 	// Create the window
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title (GTK_WINDOW (window), "lrxmms2");
     g_signal_connect (window, "delete-event", G_CALLBACK (delete_event), NULL);
-	g_signal_connect (window, "destroy",  G_CALLBACK (destroy), NULL);
+	g_signal_connect (window, "destroy",  G_CALLBACK(destroy), NULL);
     gtk_container_set_border_width (GTK_CONTAINER (window), 10);
 
-    box1 = gtk_hbox_new (FALSE, 0);
+    mainBox = gtk_vbox_new (FALSE, 0);
+    gtk_container_add (GTK_CONTAINER (window), mainBox);
+	
+    playbackControlBox = gtk_hbutton_box_new  ();
+	gtk_box_pack_start(GTK_BOX (mainBox), playbackControlBox, TRUE, TRUE, 0);
+	
+    playlistBox = gtk_hbox_new  (FALSE, 0);
+	gtk_box_pack_start(GTK_BOX (mainBox), playlistBox, TRUE, TRUE, 0);
+	
+    playlistControlBox = gtk_vbutton_box_new  ();
+	gtk_box_pack_start(GTK_BOX (playlistBox), playlistControlBox, TRUE, TRUE, 0);
 
-    gtk_container_add (GTK_CONTAINER (window), box1);
+	// Create the scroll for the playlist
+	scrolled_window=gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_set_usize(scrolled_window, 250, 150);
+	gtk_widget_show(scrolled_window);
 
     // Create PLAY button
     button = gtk_button_new_with_label ("Play");
     g_signal_connect (button, "clicked", G_CALLBACK (playback_play), (gpointer) connection);
-    gtk_box_pack_start (GTK_BOX(box1), button, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX(playbackControlBox), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
 	
     // Create PAUSE button
     button = gtk_button_new_with_label ("Pause");
     g_signal_connect (button, "clicked", G_CALLBACK (playback_pause), (gpointer) connection);
-    gtk_box_pack_start (GTK_BOX(box1), button, TRUE, TRUE, 0);
+    gtk_box_pack_start (GTK_BOX(playbackControlBox), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
 
     // Create STOP button
     button = gtk_button_new_with_label ("Stop");
     g_signal_connect (button, "clicked", G_CALLBACK (playback_stop), (gpointer) connection);
-    gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX (playbackControlBox), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
 	
     // Create EXIT button
     button = gtk_button_new_with_label ("Exit");
 	g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), window);
-    gtk_box_pack_start(GTK_BOX (box1), button, TRUE, TRUE, 0);
+    gtk_box_pack_start(GTK_BOX (playbackControlBox), button, TRUE, TRUE, 0);
 	gtk_widget_show (button);
 
 	// Create the playlist ListView
-	store = getGtkTreeStore();
+	get_current_playlist(connection, trackList);
+
+	getGtkTreePlaylist(connection, trackList, store);
 	tree = gtk_tree_view_new_with_model (GTK_TREE_MODEL (store));
 	renderer = gtk_cell_renderer_text_new ();
 	column = gtk_tree_view_column_new_with_attributes ("Titre",
 		                                               renderer,
 		                                               "text", TITLE_COLUMN,
+		                                               NULL);	
+	gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
+	column = gtk_tree_view_column_new_with_attributes ("Durée",
+		                                               renderer,
+		                                               "text", LENGTH_COLUMN,
 		                                               NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
-	gtk_box_pack_start(GTK_BOX (box1), tree, TRUE, TRUE, 0);
-	gtk_widget_show (tree);
+	gtk_scrolled_window_add_with_viewport( GTK_SCROLLED_WINDOW(scrolled_window),tree);
 	
-    gtk_widget_show (box1);
+	gtk_box_pack_start(GTK_BOX (playlistBox), scrolled_window, TRUE, TRUE, 0);
+
+	// Show everything
+	gtk_widget_show (tree);
+    gtk_widget_show (playbackControlBox);
+    gtk_widget_show (playlistBox);
+    gtk_widget_show (mainBox);
 
 	return window;
 }
