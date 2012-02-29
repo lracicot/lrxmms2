@@ -5,10 +5,10 @@ Geometry=1366x744+0+24
 
 [Project Manager]
 Shortcut=lrxmms2//lrxmms2//src//lrxmms2
-Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2
+Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//entities%%%lrxmms2//lrxmms2//src//entities//include%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2%%%lrxmms2//XMMS2//xmms2-client-glib
 
 [File Loader]
-Files=file:///home/master/workspace/lrxmms2/src/main.c#22%%%file:///home/master/workspace/lrxmms2/src/xmms2.c#74%%%file:///home/master/workspace/lrxmms2/src/xmms2.h#30%%%file:///usr/include/xmms2/xmmsclient/xmmsclient.h#94%%%file:///home/master/workspace/lrxmms2/src/playback.c#26%%%file:///home/master/workspace/lrxmms2/src/playback.h#9%%%file:///home/master/workspace/lrxmms2/src/playlist.c#1%%%file:///home/master/workspace/lrxmms2/src/playlist.h#4%%%file:///home/master/workspace/lrxmms2/src/mainWindow.c#21%%%file:///home/master/workspace/lrxmms2/src/playlist_gtk_model.c#3%%%file:///home/master/workspace/lrxmms2/src/playlist_gtk_model.h#1
+Files=file:///home/master/workspace/lrxmms2/src/main.c#1%%%file:///home/master/workspace/lrxmms2/src/mainWindow.c#129%%%file:///home/master/workspace/lrxmms2/src/entities/playlist.h#1%%%file:///home/master/workspace/lrxmms2/src/entities/track.h#1%%%file:///home/master/workspace/lrxmms2/src/xmms2.c#125%%%file:///home/master/workspace/lrxmms2/src/playlist_gtk_model.c#11
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
@@ -27,5 +27,6 @@ BuildArgs/Profiling=--enable-maintainer-mode 'CFLAGS=-g -pg' 'CXXFLAGS=-g -pg' '
 BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS=-O2' 'FFLAGS=-O2'
 
 [Debugger]
-Watch=\sresult
+Watch=\strackList%%% trackInfo
+Breakpoint=1:file:///home/master/workspace/lrxmms2/src/playlist.c:69:0:%%%1:file:///home/master/workspace/lrxmms2/src/mainWindow.c:101:0:%%%1:file:///home/master/workspace/lrxmms2/src/mainWindow.c:98:0:%%%1:file:///home/master/workspace/lrxmms2/src/playlist.c:49:0:%%%1:file:///home/master/workspace/lrxmms2/src/xmms2.c:113:0:%%%1:file:///home/master/workspace/lrxmms2/src/xmms2.c:116:0:
 Stop at beginning=2
