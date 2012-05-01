@@ -25,12 +25,13 @@
 #include "xmms2.h"
 #include "mainWindow.h"
 
-int main( int   argc,
-          char* argv[] )
+int main( int argc, char* argv[] )
 {
 	GMainLoop* ml;
 	GtkWidget* window;
 	xmmsc_connection_t *connection;
+
+	system("xmms2-launcher");
 	
 	connection = get_xmms2_connection();
 	

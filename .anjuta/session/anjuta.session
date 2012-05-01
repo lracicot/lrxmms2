@@ -1,22 +1,21 @@
 
 [Anjuta]
 Maximized=1
-Geometry=1366x744+0+24
+Geometry=1317x744+49+24
 
 [Project Manager]
-Shortcut=lrxmms2//lrxmms2//src//lrxmms2
-Expand=lrxmms2%%%lrxmms2//lrxmms2%%%lrxmms2//lrxmms2//src%%%lrxmms2//lrxmms2//src//entities%%%lrxmms2//lrxmms2//src//entities//include%%%lrxmms2//lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2%%%lrxmms2//XMMS2//xmms2-client-glib
+Expand=lrxmms2%%%lrxmms2//src%%%lrxmms2//src//entities%%%lrxmms2//src//entities//include%%%lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2%%%lrxmms2//XMMS2//xmms2-client
 
 [File Loader]
-Files=file:///home/master/workspace/lrxmms2/src/main.c#1%%%file:///home/master/workspace/lrxmms2/src/mainWindow.c#129%%%file:///home/master/workspace/lrxmms2/src/entities/playlist.h#1%%%file:///home/master/workspace/lrxmms2/src/entities/track.h#1%%%file:///home/master/workspace/lrxmms2/src/xmms2.c#125%%%file:///home/master/workspace/lrxmms2/src/playlist_gtk_model.c#11
+Files=../../src/main.c#39%%%../../src/mainWindow.c#90%%%../../src/playlist_gtk_model.c#39%%%../../src/playlist.c#38
 
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
 [Execution]
-Program uri=file:///home/master/workspace/lrxmms2/Debug/src/lrxmms2
+Program uri=../../Debug/src/lrxmms2
 Run in terminal=2
-Working directories=file:///home/master/workspace/lrxmms2
+Working directories=../../../lrxmms2
 
 [Build]
 Configuration list=1:Default:%%%1:Debug:Debug%%%1:Profiling:Profiling%%%1:Optimized:Optimized
@@ -28,5 +27,5 @@ BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS
 
 [Debugger]
 Watch=\strackList%%% trackInfo
-Breakpoint=1:file:///home/master/workspace/lrxmms2/src/playlist.c:69:0:%%%1:file:///home/master/workspace/lrxmms2/src/mainWindow.c:101:0:%%%1:file:///home/master/workspace/lrxmms2/src/mainWindow.c:98:0:%%%1:file:///home/master/workspace/lrxmms2/src/playlist.c:49:0:%%%1:file:///home/master/workspace/lrxmms2/src/xmms2.c:113:0:%%%1:file:///home/master/workspace/lrxmms2/src/xmms2.c:116:0:
+Breakpoint=1:../../src/playlist.c:69:0:%%%1:../../src/mainWindow.c:101:0:%%%1:../../src/mainWindow.c:98:0:%%%1:../../src/xmms2.c:113:0:%%%1:../../src/xmms2.c:116:0:%%%1:../../src/playlist_gtk_model.c:32:0:
 Stop at beginning=2

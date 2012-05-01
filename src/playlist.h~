@@ -4,7 +4,9 @@
 
 void get_current_playlist( gpointer connection, playlist* trackList);
 
-void playback_add( GtkWidget *widget,
+void playlist_add( GtkWidget *widget,
                         gpointer   connection );
+void playlist_remove( GtkWidget *widget,
+                       gpointer   connection);
 
 #endif

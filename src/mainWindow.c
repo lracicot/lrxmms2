@@ -22,13 +22,32 @@
 #include "playlist_gtk_model.h"
 #include "entities/playlist.h"
 
+GtkWidget *tree;
+
 enum
 {
    TITLE_COLUMN,
    ARTIST_COLUMN,
+   ID_COLUMN,
+   //LENGTH_COLUMN,
    CURRENT_COLUMN,
    N_COLUMNS
 };
+
+typedef struct
+{
+	gpointer* connection;
+	int trackId;
+	
+} playlistParam;
+
+/*typedef struct
+{
+	xmmsc_connection_t * connection;
+	GtkWidget *container;
+	GtkTreeStore *store;
+	
+} xmmsGtkConnector;*/
 
 static gboolean delete_event( GtkWidget *widget,
                               GdkEvent  *event,
@@ -45,29 +64,80 @@ static void destroy(GtkWidget* widget,
 	gtk_main_quit ();
 }
 
+static void
+remove_item(GtkWidget *widget, gpointer selection)
+{
+  GtkListStore *store;
+  GtkTreeModel *model;
+  GtkTreeIter  iter;
+
+
+  store = GTK_LIST_STORE(gtk_tree_view_get_model(
+      GTK_TREE_VIEW (widget)));
+  model = gtk_tree_view_get_model (GTK_TREE_VIEW (widget));
+
+  if (gtk_tree_model_get_iter_first(model, &iter) == FALSE) 
+      return;
+
+  if (gtk_tree_selection_get_selected(GTK_TREE_SELECTION(selection), 
+      &model, &iter)) {
+    gtk_list_store_remove(store, &iter);
+  }
+}
+
+static void playlist_remove_selected(GtkWidget* widget,
+                    gpointer   connection)
+{
+  GtkTreeSelection *selection;
+  GtkTreeModel     *model;
+  GtkTreeIter       iter;
+  GtkListStore *store;
+
+  selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(tree));
+  store = GTK_LIST_STORE(gtk_tree_view_get_model(
+      GTK_TREE_VIEW (widget)));
+
+  if (gtk_tree_selection_get_selected(selection, &model, &iter))
+  {
+    gint *id;
+    gtk_tree_model_get (model, &iter, ID_COLUMN, &id, -1);
+
+    //playlist_remove(connection, id);
+	  gtk_list_store_remove(store, &iter);
+	//remove_item(tree, selection);
+	  
+  }
+  else
+  {
+    g_print ("no row selected.\n");
+  }	
+}
+
 GtkWidget* new_mainWindow (gpointer* connection)
 {
     GtkWidget *window;
 	GtkWidget *button;
-	GtkWidget *tree;
     GtkWidget *mainBox;
     GtkWidget *playbackControlBox;
     GtkWidget *playlistBox;
     GtkWidget *playlistControlBox;
 	GtkWidget *scrolled_window;
-
 	GtkTreeStore *store;
 	GtkTreeViewColumn *column;
 	GtkCellRenderer *renderer;
 	playlist *trackList;
+	playlistParam playlistAction;
+	
 	trackList = malloc(sizeof(playlist));
 
 	
 	
 	store = gtk_tree_store_new (N_COLUMNS,    // Total number of columns
+	                            G_TYPE_STRING,   // Song name
                              G_TYPE_STRING,   // Song name
-                             G_TYPE_STRING,   // Artist
-                             G_TYPE_BOOLEAN); // Current?
+                             G_TYPE_INT,   // Artist
+                             G_TYPE_INT//,   // Artist
+	                            ); 
 
 	// Create the window
     window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
@@ -84,9 +154,6 @@ GtkWidget* new_mainWindow (gpointer* connection)
 	
     playlistBox = gtk_hbox_new  (FALSE, 0);
 	gtk_box_pack_start(GTK_BOX (mainBox), playlistBox, TRUE, TRUE, 0);
-	
-    playlistControlBox = gtk_vbutton_box_new  ();
-	gtk_box_pack_start(GTK_BOX (playlistBox), playlistControlBox, TRUE, TRUE, 0);
 
 	// Create the scroll for the playlist
 	scrolled_window=gtk_scrolled_window_new(NULL, NULL);
@@ -94,20 +161,32 @@ GtkWidget* new_mainWindow (gpointer* connection)
 	gtk_widget_show(scrolled_window);
 
     // Create PLAY button
-    button = gtk_button_new_with_label ("Play");
-    g_signal_connect (button, "clicked", G_CALLBACK (playback_play), (gpointer) connection);
+    button = gtk_toggle_button_new_with_label ("Play");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_toggleplay), (gpointer) connection);
     gtk_box_pack_start (GTK_BOX(playbackControlBox), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
 	
-    // Create PAUSE button
+    /*// Create PAUSE button
     button = gtk_button_new_with_label ("Pause");
     g_signal_connect (button, "clicked", G_CALLBACK (playback_pause), (gpointer) connection);
     gtk_box_pack_start (GTK_BOX(playbackControlBox), button, TRUE, TRUE, 0);
-    gtk_widget_show (button);
+    gtk_widget_show (button);*/
 
     // Create STOP button
     button = gtk_button_new_with_label ("Stop");
     g_signal_connect (button, "clicked", G_CALLBACK (playback_stop), (gpointer) connection);
+    gtk_box_pack_start(GTK_BOX (playbackControlBox), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);
+
+    // Create PREV button
+    button = gtk_button_new_with_label ("<-");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_prev), (gpointer) connection);
+    gtk_box_pack_start(GTK_BOX (playbackControlBox), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);
+
+    // Create NEXT button
+    button = gtk_button_new_with_label ("->");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_next), (gpointer) connection);
     gtk_box_pack_start(GTK_BOX (playbackControlBox), button, TRUE, TRUE, 0);
     gtk_widget_show (button);
 	
@@ -128,18 +207,42 @@ GtkWidget* new_mainWindow (gpointer* connection)
 		                                               "text", TITLE_COLUMN,
 		                                               NULL);	
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
-	column = gtk_tree_view_column_new_with_attributes ("Durée",
+	column = gtk_tree_view_column_new_with_attributes ("Artiste",
 		                                               renderer,
 		                                               "text", ARTIST_COLUMN,
 		                                               NULL);
 	gtk_tree_view_append_column (GTK_TREE_VIEW (tree), column);
+	g_signal_connect(tree, "row-activated", (GCallback) playback_jump, (gpointer) connection);
 	gtk_scrolled_window_add_with_viewport( GTK_SCROLLED_WINDOW(scrolled_window),tree);
 	
 	gtk_box_pack_start(GTK_BOX (playlistBox), scrolled_window, TRUE, TRUE, 0);
+	
+    playlistControlBox = gtk_vbutton_box_new  ();
+	gtk_box_pack_start(GTK_BOX (playlistBox), playlistControlBox, TRUE, TRUE, 0);
+	
+	
+    // Create Add button
+    button = gtk_button_new_with_label ("+");
+	//g_signal_connect_swapped (button, "clicked", G_CALLBACK (gtk_widget_destroy), window);
+    gtk_box_pack_start(GTK_BOX (playlistControlBox), button, TRUE, TRUE, 0);
+	gtk_widget_show (button);
+
+    /*// Create TEST button
+    button = gtk_button_new_with_label ("Test");
+    g_signal_connect (button, "clicked", G_CALLBACK (playback_test), (gpointer) connection);
+    gtk_box_pack_start(GTK_BOX (playbackControlBox), button, TRUE, TRUE, 0);
+    gtk_widget_show (button);*/
+	
+    // Create Remove button
+    button = gtk_button_new_with_label ("-");
+    g_signal_connect (button, "clicked", G_CALLBACK (playlist_remove_selected), (gpointer) connection);
+    gtk_box_pack_start(GTK_BOX (playlistControlBox), button, TRUE, TRUE, 0);
+	gtk_widget_show (button);
 
 	// Show everything
 	gtk_widget_show (tree);
     gtk_widget_show (playbackControlBox);
+    gtk_widget_show (playlistControlBox);
     gtk_widget_show (playlistBox);
     gtk_widget_show (mainBox);
 

@@ -9,6 +9,8 @@ enum
 {
    TITLE_COLUMN,
    ARTIST_COLUMN,
+   ID_COLUMN,
+  // LENGTH_COLUMN,
    CURRENT_COLUMN,
    N_COLUMNS
 };
@@ -19,6 +21,7 @@ void getGtkTreePlaylist(xmmsc_connection_t *connection, playlist *trackList, Gtk
 	track *trackInfo;
 	
 	int id;
+	int i = 0;
 	xmmsv_t *list_entry;
 	
 	for (; xmmsv_list_iter_valid (trackList->tracks); xmmsv_list_iter_next (trackList->tracks))
@@ -34,6 +37,7 @@ void getGtkTreePlaylist(xmmsc_connection_t *connection, playlist *trackList, Gtk
 		trackInfo = get_mediainfo (connection, id);
 
 		gtk_tree_store_append (store, &iter, NULL);  // Acquire an iterator
+		g_print("test2");
 
 /*		gtk_tree_store_set (store, &iter,
 		                TITLE_COLUMN, trackInfo->title,
@@ -42,7 +46,10 @@ void getGtkTreePlaylist(xmmsc_connection_t *connection, playlist *trackList, Gtk
 		gtk_tree_store_set (store, &iter,
 		                TITLE_COLUMN, trackInfo->title,
 		                ARTIST_COLUMN, trackInfo->artist,
-		                CURRENT_COLUMN, 0);
+		                ID_COLUMN, i++,
+		               // LENGTH_COLUMN, trackInfo->length,
+		                CURRENT_COLUMN, 0
+		                    );
 		                    
 	}
 }

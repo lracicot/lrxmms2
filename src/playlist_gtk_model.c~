@@ -8,7 +8,9 @@
 enum
 {
    TITLE_COLUMN,
-   LENGTH_COLUMN,
+   ARTIST_COLUMN,
+   ID_COLUMN,
+  // LENGTH_COLUMN,
    CURRENT_COLUMN,
    N_COLUMNS
 };
@@ -19,6 +21,7 @@ void getGtkTreePlaylist(xmmsc_connection_t *connection, playlist *trackList, Gtk
 	track *trackInfo;
 	
 	int id;
+	int i = 0;
 	xmmsv_t *list_entry;
 	
 	for (; xmmsv_list_iter_valid (trackList->tracks); xmmsv_list_iter_next (trackList->tracks))
@@ -26,6 +29,7 @@ void getGtkTreePlaylist(xmmsc_connection_t *connection, playlist *trackList, Gtk
 		if (!xmmsv_list_iter_entry (trackList->tracks, &list_entry)) {
 			fprintf (stderr, "Couldn't get entry from list\n");
 		}
+		g_print("test2");
 
 		if (!xmmsv_get_int (list_entry, &id)) {
 			fprintf (stderr, "Couldn't get int from list entry\n");
@@ -42,7 +46,10 @@ void getGtkTreePlaylist(xmmsc_connection_t *connection, playlist *trackList, Gtk
 		gtk_tree_store_set (store, &iter,
 		                TITLE_COLUMN, trackInfo->title,
 		                ARTIST_COLUMN, trackInfo->artist,
-		                CURRENT_COLUMN, 0);
+		                ID_COLUMN, i++,
+		               // LENGTH_COLUMN, trackInfo->length,
+		                CURRENT_COLUMN, 0
+		                    );
 		                    
 	}
 }

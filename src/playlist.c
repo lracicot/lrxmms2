@@ -1,11 +1,11 @@
-#include <xmmsclient/xmmsclient.h>
-#include <xmmsclient/xmmsclient-glib.h>
-#include <gtk/gtk.h>
-#include "entities/playlist.h"
-#include "xmms2.h"
-#include "entities/track.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
+#include <xmmsclient/xmmsclient.h>
+#include <xmmsclient/xmmsclient-glib.h>
+#include "entities/playlist.h"
+#include "entities/track.h"
+#include "xmms2.h"
 
 const char *err_buf;
 
@@ -53,4 +53,11 @@ void playlist_add( GtkWidget *widget,
                         gpointer   connection )
 {
 	
+}
+
+void playlist_remove(gpointer connection, int id)
+{
+	xmmsc_result_t *result = xmms2_playlist_remove((xmmsc_connection_t *) connection, id);
+	//handle result
+	xmmsc_result_unref (result);
 }

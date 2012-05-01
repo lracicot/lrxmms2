@@ -23,6 +23,7 @@
 #include <xmmsclient/xmmsclient.h>
 #include <xmmsclient/xmmsclient-glib.h>
 #include "entities/track.h"
+#include "xmms2.h"
 
 const char *err_buf;
 
@@ -72,9 +73,56 @@ xmmsc_result_t *xmms2_playback_stop (xmmsc_connection_t * connection)
 	return result;
 }
 
+xmmsc_result_t *xmms2_playback_prev (xmmsc_connection_t * connection)
+{
+	xmmsc_result_t *result;
+
+	result = xmmsc_playlist_set_next_rel (connection, -1);
+    xmmsc_result_wait (result);
+
+	result = xmmsc_playback_tickle (connection);
+    xmmsc_result_wait (result);
+
+	xmms2_playback_play(connection);
+
+	return result;
+}
+
+xmmsc_result_t *xmms2_playback_next (xmmsc_connection_t * connection)
+{
+	xmmsc_result_t *result;
+
+	result = xmmsc_playlist_set_next_rel (connection, 1);
+    xmmsc_result_wait (result);
+
+	result = xmmsc_playback_tickle (connection);
+    xmmsc_result_wait (result);
+
+	xmms2_playback_play(connection);
+
+	return result;
+}
+
 xmmsc_result_t *xmms2_playlist_current_active (xmmsc_connection_t * connection)
 {
 	xmmsc_result_t *result = xmmsc_playlist_current_active (connection);
+	xmmsc_result_wait (result);
+
+	return result;
+}
+
+xmmsc_result_t* xmms2_playlist_remove (xmmsc_connection_t *connection, int id)
+{
+	xmmsv_t *playlistId;
+	xmmsc_result_t *result;
+	
+	result = xmms2_playlist_current_active(connection);
+	xmmsc_result_wait (result);
+	playlistId = xmmsc_result_get_value (result);
+	g_print("test: %c\n", playlistId);
+	g_print("%d\n", id);
+	
+	result = xmmsc_playlist_remove_entry(connection, playlistId, id);
 	xmmsc_result_wait (result);
 
 	return result;
@@ -114,6 +162,24 @@ track *get_mediainfo (xmmsc_connection_t *connection, int id)
 	}
 
 	song->artist = val;
+	
+	infos = xmmsv_propdict_to_dict (return_value, NULL);
+
+	if (!xmmsv_dict_get (infos, "length", &dict_entry) ||
+	    !xmmsv_get_string (dict_entry, &val)) {
+		val = 0;
+	}
+
+	song->length = val;
+	
+	infos = xmmsv_propdict_to_dict (return_value, NULL);
+
+	if (!xmmsv_dict_get (infos, "position", &dict_entry) ||
+	    !xmmsv_get_string (dict_entry, &val)) {
+		val = 0;
+	}
+
+	song->position = val;
 
 	if (!xmmsv_dict_get (infos, "title", &dict_entry) ||
 	    !xmmsv_get_string (dict_entry, &val)) {
@@ -123,19 +189,11 @@ track *get_mediainfo (xmmsc_connection_t *connection, int id)
 			}
 			else
 			{
-				// strrpos
-				/*for (i = strlen(val)-1; i>=0; i--)
-				{
-					if (strcmp(val[i], "/"))
-					{
-						strfound = i;
-						break;
-					}
-				}*/
+				// substr
 				strfound = strrchr(val, '/');
-
-				//substr
-				val = strfound;
+				free(val);
+				val = malloc(sizeof(val));
+				strncpy(val, strfound+1, strlen(strfound)-5);
 			}
 	}
 	song->title = val;

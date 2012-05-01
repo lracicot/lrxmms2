@@ -4,9 +4,11 @@
 
 typedef struct 
 {
+	xmmsc_connection_t * connection;
 	const char *title;
-	int length;
+	const char *length;
 	const char *artist;
+	int position;
 	int current;
 } track;
 

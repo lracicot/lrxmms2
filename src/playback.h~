@@ -1,5 +1,5 @@
-#ifndef __LRXMMS2_PLAYLIST_GTK_MODEL_H__
-#define __LRXMMS2_PLAYLIST_GTK_MODEL_H__
+#ifndef __LRXMMS2_PLAYBACK_H__
+#define __LRXMMS2_PLAYBACK_H__
 
 void playback_play( GtkWidget *widget,
                         gpointer   connection );
@@ -7,7 +7,14 @@ void playback_play( GtkWidget *widget,
 void playback_pause( GtkWidget *widget,
                         gpointer   connection );
 
+void playback_toggleplay( GtkWidget *widget,
+                          gpointer connection );
+
 void playback_stop( GtkWidget *widget,
                         gpointer   connection );
 
+void playback_jump( GtkTreeView        *treeview,
+                       GtkTreePath        *path,
+                       GtkTreeViewColumn  *col,
+                       gpointer   connection);
 #endif
