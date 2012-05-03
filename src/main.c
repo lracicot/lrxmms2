@@ -24,10 +24,11 @@
 #include <stdlib.h>
 #include "xmms2.h"
 #include "mainWindow.h"
+#include "mainTest.h"
 
 int main( int argc, char* argv[] )
 {
-	GMainLoop* ml;
+	//GMainLoop* ml;
 	GtkWidget* window;
 	xmmsc_connection_t *connection;
 
@@ -38,10 +39,11 @@ int main( int argc, char* argv[] )
     gtk_init (&argc, &argv);
     window = new_mainWindow((gpointer) connection);
 	
-    gtk_widget_show (window);
-
-	ml = g_main_loop_new (NULL, FALSE);
-	g_main_loop_run (ml);
+    gtk_widget_show_all(window);
+	gtk_main ();
+	
+	//ml = g_main_loop_new (NULL, FALSE);
+	//g_main_loop_run (ml);
 
     return 0;
 }

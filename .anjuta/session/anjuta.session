@@ -3,12 +3,6 @@
 Maximized=1
 Geometry=1317x744+49+24
 
-[Project Manager]
-Expand=lrxmms2%%%lrxmms2//src%%%lrxmms2//src//entities%%%lrxmms2//src//entities//include%%%lrxmms2//src//lrxmms2%%%lrxmms2//XMMS2%%%lrxmms2//XMMS2//xmms2-client
-
-[File Loader]
-Files=../../src/main.c#39%%%../../src/mainWindow.c#90%%%../../src/playlist_gtk_model.c#39%%%../../src/playlist.c#38
-
 [Document Manager]
 bookmarks=<?xml version="1.0" encoding="UTF-8"?>\n<bookmarks/>\n
 
@@ -27,5 +21,5 @@ BuildArgs/Optimized=--enable-maintainer-mode 'CFLAGS=-O2' 'CXXFLAGS=-O2' 'JFLAGS
 
 [Debugger]
 Watch=\strackList%%% trackInfo
-Breakpoint=1:../../src/playlist.c:69:0:%%%1:../../src/mainWindow.c:101:0:%%%1:../../src/mainWindow.c:98:0:%%%1:../../src/xmms2.c:113:0:%%%1:../../src/xmms2.c:116:0:%%%1:../../src/playlist_gtk_model.c:32:0:
+Breakpoint=1:../../src/playlist.c:69:0:%%%1:../../src/mainWindow.c:101:0:%%%1:../../src/mainWindow.c:98:0:%%%1:../../src/xmms2.c:121:0:%%%1:../../src/mainWindow.c:116:0:%%%1:../../src/playlist_gtk_model.c:30:0:
 Stop at beginning=2

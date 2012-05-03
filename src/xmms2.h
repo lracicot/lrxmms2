@@ -31,6 +31,7 @@ xmmsc_result_t 		*xmms2_playback_prev (xmmsc_connection_t * connection);
 xmmsc_result_t 		*xmms2_playback_next (xmmsc_connection_t * connection);
 xmmsc_result_t 		*xmms2_playback_stop (xmmsc_connection_t * connection);
 xmmsc_result_t 		*xmms2_playlist_current_active (xmmsc_connection_t * connection);
+xmmsc_result_t* xmms2_playlist_remove (xmmsc_connection_t *connection, int id);
 track 				*get_mediainfo (xmmsc_connection_t *connection, int id);
 
 #endif

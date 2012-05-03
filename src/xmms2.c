@@ -113,14 +113,7 @@ xmmsc_result_t *xmms2_playlist_current_active (xmmsc_connection_t * connection)
 
 xmmsc_result_t* xmms2_playlist_remove (xmmsc_connection_t *connection, int id)
 {
-	xmmsv_t *playlistId;
 	xmmsc_result_t *result;
-	
-	result = xmms2_playlist_current_active(connection);
-	xmmsc_result_wait (result);
-	playlistId = xmmsc_result_get_value (result);
-	g_print("test: %c\n", playlistId);
-	g_print("%d\n", id);
 	
 	result = xmmsc_playlist_remove_entry(connection, NULL, id);
 	xmmsc_result_wait (result);

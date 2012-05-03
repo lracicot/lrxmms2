@@ -57,7 +57,8 @@ void playlist_add( GtkWidget *widget,
 
 void playlist_remove(gpointer connection, int id)
 {
-	xmmsc_result_t *result = xmms2_playlist_remove((xmmsc_connection_t *) connection);
+	g_print("%d", id);
+	xmmsc_result_t *result = xmms2_playlist_remove((xmmsc_connection_t *) connection, id);
 	//handle result
 	xmmsc_result_unref (result);
 }

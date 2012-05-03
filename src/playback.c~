@@ -68,21 +68,22 @@ void playback_next( GtkWidget *widget,
 
 
 void
-  playback_jump (GtkTreeView        *treeview,
+  playback_jump (GtkTreeView        *list,
                        GtkTreePath        *path,
                        GtkTreeViewColumn  *col,
                        gpointer   connection)
   {
-    GtkTreeModel *model;
-    GtkTreeIter   iter;
-	  xmmsc_result_t *res;
+	xmmsc_result_t *res;
+	GtkTreeSelection *selection;
+	GtkTreeModel     *model;
+	GtkTreeIter       iter;
 
-    model = gtk_tree_view_get_model(treeview);
-
-    if (gtk_tree_model_get_iter(model, &iter, path))
-    {
+	selection = gtk_tree_view_get_selection(GTK_TREE_VIEW(list));
+	if (gtk_tree_selection_get_selected(selection, &model, &iter))
+	{
 		gint *id;
-		gtk_tree_model_get(model, &iter, ID_COLUMN, &id, -1);
+
+		gtk_tree_model_get (model, &iter, 1, &id, -1);
 
 		res = xmmsc_playlist_set_next (connection, id);
 		xmmsc_result_wait (res); 
@@ -91,5 +92,5 @@ void
 		xmmsc_result_unref (res);
 
 		playback_play( treeview, connection );
-    }
+	}
   }
